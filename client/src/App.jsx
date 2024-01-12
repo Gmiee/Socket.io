@@ -5,7 +5,6 @@ import { Container, TextField, Typography, Button, Stack } from '@mui/material'
 
 
 const App = () => {
-  // const socket = 
   const socket = useMemo(() => io("http://localhost:3000/"), [])
 
   const [msgs, setMgs] = useState([]);
@@ -31,7 +30,7 @@ const App = () => {
   useEffect(() => {
     socket.on("connect", () => {
       setSocketId(socket.id)
-      console.log("User Connected", socket.id)
+      // console.log("User Connected", socket.id)
 
     })
 
@@ -50,22 +49,21 @@ const App = () => {
   return (
     <>
       <Container style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', marginTop: '7rem ' }}>
-        <Typography variant='h4' component="div" >
+        <Typography variant='h5' component="div" >
           Private Chat Room!
-        </Typography><br />
+      
+        </Typography>
+        <p>We don't store any of your data. </p><br />
 
 
         <Typography>
-          {socketId}
-        </Typography><br /><br />
-
-
-
+          <h4>USER ID :  {socketId}</h4> 
+          
+        </Typography><br />
 
         <form onSubmit={joinRoomHandler}>
-
-          <h4 style={{margin:'auto'}}>Join or Create Room</h4>
-          <TextField value={roomName} onChange={(e) => setRoomName(e.target.value)} id="standard-basic" label="Enter RoomId" variant="standard" /> <br />
+          <h4 >Join or Create New Room</h4>
+          <TextField value={roomName} onChange={(e) => setRoomName(e.target.value)} id="standard-basic" label="Enter Room ID" variant="standard" /> <br />
           <Button type='submit' style={{marginTop:'1rem'}}>Join Room</Button>
           
         </form>
@@ -75,7 +73,7 @@ const App = () => {
         <form onSubmit={handleSubmit}>
           <TextField value={message} onChange={(e) => setMessage(e.target.value)} id="standard-basic" label="Enter Message" variant="standard" /> <br />
 
-          <TextField value={room} onChange={(e) => setRoom(e.target.value)} id="standard-basic" label="Enter Room Id" variant="standard" /> <br />
+          <TextField value={room} onChange={(e) => setRoom(e.target.value)} id="standard-basic" label="Enter Room ID/ User ID" variant="standard" /> <br />
 
           <Button type='submit' variant="contained" size="small" style={{ margin: '1rem' }}>SEND</Button>
         </form>
