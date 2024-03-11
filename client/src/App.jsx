@@ -65,8 +65,8 @@ const App = () => {
           <Typography variant='h5' component="div" >
             Private Chat Room!
           </Typography>
-          <p>We don't store any of your data. </p><br />
-          <p>Kindly avoid refreshing the page, as doing so result in a change of the user ID</p>
+          <p>Kindly avoid refreshing the page, as doing so result in a change of the user ID</p> <br />
+          {/* <p>We don't store any of your data. </p> */}
           <Typography style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Typography variant='subtitle2'>Your User Id :  {socketId}</Typography>
             <IconButton onClick={handleCopy} size='small'>
@@ -97,7 +97,7 @@ const App = () => {
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', position: 'absolute', bottom: 0 }}>
 
-            <TextField value={room} onChange={(e) => setRoom(e.target.value)} id="standard-basic" label="Enter Room ID/ User ID" variant="standard" /> <br />
+            <TextField value={room} onChange={(e) => setRoom(e.target.value)} id="standard-basic" label="User ID" variant="standard" /> <br />
             <Stack sx={{ display: 'flex', }}>
               <TextField value={message} onChange={(e) => setMessage(e.target.value)} id="standard-basic" label="Enter Message" variant="standard" />
 
