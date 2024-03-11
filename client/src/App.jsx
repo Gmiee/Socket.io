@@ -1,8 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useEffect } from 'react';
-import { Container, TextField, Typography, Button, Stack } from '@mui/material'
-
+import { Container, TextField, Typography, Button, Stack, IconButton } from '@mui/material'
+import { MdContentCopy } from "react-icons/md";
+import toast, { Toaster } from 'react-hot-toast';
+import { RiSendPlaneLine } from "react-icons/ri";
 
 const App = () => {
   const socket = useMemo(() => io("http://localhost:3000/"), [])
@@ -14,16 +16,22 @@ const App = () => {
   const [socketId, setSocketId] = useState("");
   // console.log(msgs)
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(socketId)
+    toast.success('Copied')
+  }
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     socket.emit("message", { message, room });
     setMessage("");
     // setRoom("");
   }
-  
-  const joinRoomHandler = (e)=>{
+
+  const joinRoomHandler = (e) => {
     e.preventDefault();
-    socket.emit('join-room',roomName)
+    socket.emit('join-room', roomName)
     setRoomName("")
   }
 
@@ -48,47 +56,57 @@ const App = () => {
   }, [])
   return (
     <>
-      <Container style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', marginTop: '7rem ' }}>
-        <Typography variant='h5' component="div" >
-          Private Chat Room!
-      
-        </Typography>
-        <p>We don't store any of your data. </p><br />
-
-
-        <Typography>
-          <h4>USER ID :  {socketId}</h4> 
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
+      <div className='' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: '100vh', position: 'relative' }}>
+        <Container style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', alignItems: 'center', marginTop: '2rem ' }}>
+          <Typography variant='h5' component="div" >
+            Private Chat Room!
+          </Typography>
+          <p>We don't store any of your data. </p><br />
+          <p>Kindly avoid refreshing the page, as doing so result in a change of the user ID</p>
+          <Typography style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Typography variant='subtitle2'>Your User Id :  {socketId}</Typography>
+            <IconButton onClick={handleCopy} size='small'>
+              <MdContentCopy />
+            </IconButton>
           
-        </Typography><br />
+          </Typography><br />
 
-        <form onSubmit={joinRoomHandler}>
+          {/* <form onSubmit={joinRoomHandler}>
           <h4 >Join or Create New Room</h4>
           <TextField value={roomName} onChange={(e) => setRoomName(e.target.value)} id="standard-basic" label="Enter Room ID" variant="standard" /> <br />
           <Button type='submit' style={{marginTop:'1rem'}}>Join Room</Button>
           
-        </form>
+        </form> */}
 
 
-
-        <form onSubmit={handleSubmit}>
-          <TextField value={message} onChange={(e) => setMessage(e.target.value)} id="standard-basic" label="Enter Message" variant="standard" /> <br />
-
-          <TextField value={room} onChange={(e) => setRoom(e.target.value)} id="standard-basic" label="Enter Room ID/ User ID" variant="standard" /> <br />
-
-          <Button type='submit' variant="contained" size="small" style={{ margin: '1rem' }}>SEND</Button>
-        </form>
-        <Stack>
           <Stack>
-            {
-              msgs.map((m, i) => (
-                <Typography key={i} variant='h6' component="div">
-                  {m}
-                </Typography>
-              ))
-            }
+            <Stack>
+              {
+                msgs.map((m, i) => (
+                  <Typography key={i} variant='h6' component="div">
+                    {m}
+                  </Typography>
+                ))
+              }
+            </Stack>
           </Stack>
-        </Stack>
-      </Container>
+
+          <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', position: 'absolute', bottom: 0 }}>
+
+            <TextField value={room} onChange={(e) => setRoom(e.target.value)} id="standard-basic" label="Enter Room ID/ User ID" variant="standard" /> <br />
+            <Stack sx={{ display: 'flex', }}>
+              <TextField value={message} onChange={(e) => setMessage(e.target.value)} id="standard-basic" label="Enter Message" variant="standard" />
+
+              <Button type='submit' variant="contained" size="medium" style={{ margin: '1rem', display:'flex',gap:'1rem' }}>SEND <RiSendPlaneLine /></Button>
+            </Stack>
+          </form>
+
+        </Container>
+      </div>
 
     </>
   )
