@@ -72,7 +72,7 @@ const App = () => {
             <IconButton onClick={handleCopy} size='small'>
               <MdContentCopy />
             </IconButton>
-          
+
           </Typography><br />
 
           {/* <form onSubmit={joinRoomHandler}>
@@ -83,11 +83,11 @@ const App = () => {
         </form> */}
 
 
-          <Stack>
-            <Stack>
+          <Stack sx={{ gap: '5' }}>
+            <Stack sx={{ maxHeight: '300px', overflowY: 'auto', maxWidth: '500px',gap:2,'@media (max-width: 600px)': { maxWidth: 'auto', maxHeight:'200px' } }}>
               {
                 msgs.map((m, i) => (
-                  <Typography key={i} variant='h6' component="div">
+                  <Typography variant='inherit' key={i} component="div" sx={{ background: '#E8E0DF', padding: 2, borderRadius: 3, display: 'flex', }}>
                     {m}
                   </Typography>
                 ))
@@ -101,7 +101,7 @@ const App = () => {
             <Stack sx={{ display: 'flex', }}>
               <TextField value={message} onChange={(e) => setMessage(e.target.value)} id="standard-basic" label="Enter Message" variant="standard" />
 
-              <Button type='submit' variant="contained" size="medium" style={{ margin: '1rem', display:'flex',gap:'1rem' }}>SEND <RiSendPlaneLine /></Button>
+              <Button type='submit' variant="contained" size="medium" style={{ margin: '1rem', display: 'flex', gap: '1rem' }}>SEND <RiSendPlaneLine /></Button>
             </Stack>
           </form>
 
